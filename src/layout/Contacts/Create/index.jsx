@@ -11,7 +11,7 @@ import Header from "../../../components/Header/index.jsx";
 import "./index.css";
 import countries from "../../../utils/countries";
 
-const Create = ({ onChange }) => {
+const Create = ({ onChange, onSubmit, formInvalid, loading }) => {
   return (
     <>
       <Header />
@@ -41,13 +41,14 @@ const Create = ({ onChange }) => {
                 <Form.Group widths={2}>
                   <Form.Input
                     label="countryCode"
-                    name="country"
+                    name="countryCode"
                     control={Select}
                     options={countries}
                     onChange={onChange}
                     placeholder="country"
                   />
                   <Form.Input
+                    type="number"
                     label="phone number"
                     name="phone_number"
                     onChange={onChange}
@@ -61,7 +62,13 @@ const Create = ({ onChange }) => {
                     onChange(e, { name: `favourite`, value: data.checked })
                   }
                 />
-                <Button primary type="submit">
+                <Button
+                  onClick={onSubmit}
+                  disabled={formInvalid || loading}
+                  primary
+                  loading={loading}
+                  type="submit"
+                >
                   Submit
                 </Button>
               </Form>
