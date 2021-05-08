@@ -9,6 +9,8 @@ import {
 import { GlobalProvider } from "./context/Provider";
 import isAuthenticated from "./utils/isAuthenticated";
 import routes from "./routes";
+import { useState } from "react";
+import UserLeaveConfirmPrompt from "./components/UserLeaveConfirmPrompt";
 
 const RenderRoute = (route) => {
   const history = useHistory();
@@ -26,9 +28,14 @@ const RenderRoute = (route) => {
 };
 
 const App = () => {
+  const [confirmOpen, setConfirmOpen] = useState(true);
   return (
     <GlobalProvider>
-      <Router>
+      <Router
+        getUserConfirmation={(message, callback) =>
+          UserLeaveConfirmPrompt(message, callback, confirmOpen, setConfirmOpen)
+        }
+      >
         <Switch>
           {routes?.map((route, index) => (
             <RenderRoute key={index} {...route} />

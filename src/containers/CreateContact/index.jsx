@@ -23,6 +23,11 @@ const CreateContactComponent = () => {
     return () => clearCreateContact()(contactDispatch);
   }, [data]);
   const onSubmit = () => createContact(form)(contactDispatch);
+
+  const formIsEdited =
+    Object.values(form)?.filter((item) => item && item !== ``)?.length > 0 &&
+    !data;
+
   const formInvalid =
     !form?.firstName?.length ||
     !form?.lastName?.length ||
@@ -36,6 +41,7 @@ const CreateContactComponent = () => {
       onSubmit={onSubmit}
       onChange={onChange}
       loading={loading}
+      formIsEdited={formIsEdited}
     />
   );
 };

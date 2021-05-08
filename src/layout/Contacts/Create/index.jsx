@@ -10,10 +10,18 @@ import {
 import Header from "../../../components/Header/index.jsx";
 import "./index.css";
 import countries from "../../../utils/countries";
+import { Prompt } from "react-router";
 
-const Create = ({ onChange, onSubmit, formInvalid, loading }) => {
+const Create = ({ formIsEdited, onChange, onSubmit, formInvalid, loading }) => {
   return (
     <>
+      <Prompt
+        when={formIsEdited}
+        message={JSON.stringify({
+          header: `You have unsaved changes`,
+          content: `Are you sure you want to leave?`,
+        })}
+      />
       <Header />
       <Grid centered>
         <Grid.Column className="form-column">
