@@ -8,6 +8,7 @@ import Create from "../../layout/Contacts/Create/index.jsx";
 const CreateContactComponent = () => {
   const history = useHistory();
   const [form, setForm] = useState({});
+  const [tempFile, setTempFile] = useState(null);
   const {
     contactDispatch,
     contactState: {
@@ -15,7 +16,14 @@ const CreateContactComponent = () => {
     },
   } = useContext(GlobalContext);
   const onChange = (e, { name, value }) => setForm({ ...form, [name]: value });
-
+  const onImageChange = (e) => {
+    e.persist();
+    const fileURL = e.target.files[0];
+    setForm({ ...form, contactPicture: fileURL });
+    if (fileURL) {
+      setTempFile(URL.createObjectURL(fileURL));
+    }
+  };
   useEffect(() => {
     if (data) {
       history.push(`/`);
@@ -42,6 +50,8 @@ const CreateContactComponent = () => {
       onChange={onChange}
       loading={loading}
       formIsEdited={formIsEdited}
+      onImageChange={onImageChange}
+      tempFile={tempFile}
     />
   );
 };
