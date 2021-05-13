@@ -9,7 +9,7 @@ import {
 import { GlobalProvider } from "./context/Provider";
 import isAuthenticated from "./utils/isAuthenticated";
 import routes from "./routes";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import UserLeaveConfirmPrompt from "./components/UserLeaveConfirmPrompt";
 
 const RenderRoute = (route) => {
@@ -36,11 +36,13 @@ const App = () => {
           UserLeaveConfirmPrompt(message, callback, confirmOpen, setConfirmOpen)
         }
       >
-        <Switch>
-          {routes?.map((route, index) => (
-            <RenderRoute key={index} {...route} />
-          ))}
-        </Switch>
+        <Suspense fallback={<p>Loading...</p>}>
+          <Switch>
+            {routes?.map((route, index) => (
+              <RenderRoute key={index} {...route} />
+            ))}
+          </Switch>
+        </Suspense>
       </Router>
     </GlobalProvider>
   );

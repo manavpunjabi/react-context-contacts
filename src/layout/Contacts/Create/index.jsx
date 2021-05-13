@@ -52,15 +52,17 @@ const Create = ({
                   hidden
                   ref={imagePickRef}
                 />
-                {tempFile && (
-                  <Image className="contactpicture" src={tempFile} />
-                )}
-                {!tempFile && (
-                  <div onClick={chooseImage} className="contact-picture">
-                    <span>Choose Picture</span>
-                  </div>
-                )}
-                <Icon name="pencil" onClick={chooseImage} />
+                <div className="image-wrapper">
+                  {tempFile && (
+                    <Image className="contactpicture" src={tempFile} />
+                  )}
+                  {!tempFile && (
+                    <div onClick={chooseImage} className="contact-picture">
+                      <span>Choose Picture</span>
+                    </div>
+                  )}
+                  <Icon name="pencil" onClick={chooseImage} />
+                </div>
                 <Form.Group widths={2}>
                   <Form.Input
                     label="first name"

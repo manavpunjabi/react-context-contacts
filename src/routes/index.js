@@ -1,7 +1,11 @@
+import { lazy } from "react";
 import RegisterComponent from "../containers/Register";
 import LoginComponent from "../containers/Login";
 import ContactsComponent from "../containers/Contacts";
-import CreateContactComponent from "../containers/CreateContact/index.jsx";
+
+const CreateContactComponent = lazy(() =>
+  import("../containers/CreateContact/index.jsx")
+);
 
 const routes = [
   {

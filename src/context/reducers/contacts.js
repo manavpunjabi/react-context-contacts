@@ -7,6 +7,12 @@ import {
   ADD_CONTACT_SUCCESS,
   LOGOUT,
   CLEAR_ADD_CONTACT,
+  SEARCH_CONTACTS,
+  DELETE_CONTACT_SUCCESS,
+  DELETE_CONTACT_LOADING,
+  STAR_CONTACT_LOADING,
+  STAR_CONTACT_SUCCESS,
+  STAR_CONTACT_ERROR,
 } from "../../constants/contacts";
 import contactsInitialState from "../initialStates/contactsInitialState";
 
@@ -58,6 +64,36 @@ const contacts = (state, { type, payload }) => {
           data: [payload, ...state.contacts.data],
         },
       };
+    case DELETE_CONTACT_LOADING:
+      return {
+        ...state,
+        contacts: {
+          ...state.contacts,
+          loading: false,
+          data: state.contacts.data.map((contact) =>
+            contact.id === payload ? { ...contact, deleting: true } : contact
+          ),
+        },
+      };
+    case DELETE_CONTACT_SUCCESS:
+      return {
+        ...state,
+        contacts: {
+          ...state.contacts,
+          loading: false,
+          data: state.contacts.data.filter((contact) => contact.id !== payload),
+        },
+      };
+    case STAR_CONTACT_SUCCESS:
+      return {
+        ...state,
+        contacts: {
+          ...state.contacts,
+          data: state.contacts.data.map((contact) =>
+            contact.id === payload.id ? payload : contact
+          ),
+        },
+      };
     case ADD_CONTACT_ERROR:
       return {
         ...state,
@@ -77,6 +113,31 @@ const contacts = (state, { type, payload }) => {
       return {
         ...state,
         contactsInitialState,
+      };
+    case SEARCH_CONTACTS:
+      return {
+        contacts: {
+          ...state.contacts,
+          loading: false,
+          isSearchActive: !!payload.length > 0 || false,
+          foundContacts: state.contacts.data.filter((contact) => {
+            try {
+              return (
+                contact.first_name
+                  .toLowerCase()
+                  .search(payload.toLowerCase()) !== -1 ||
+                contact.last_name
+                  .toLowerCase()
+                  .search(payload.toLowerCase()) !== -1 ||
+                contact.phone_number
+                  .toLowerCase()
+                  .search(payload.toLowerCase()) !== -1
+              );
+            } catch (error) {
+              return [];
+            }
+          }),
+        },
       };
     default:
       return state;
